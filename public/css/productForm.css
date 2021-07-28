@@ -1,0 +1,133 @@
+main.productForm {
+    background-color: #f2edd7;
+    padding: 17px 0px 40px 0px;
+}
+
+    main.productForm h1 {
+        text-align: center;
+        margin: 0% 0% 20px 0%;
+    }
+
+    main.productForm section.edicionCreacion {
+        width: 70%;
+        max-width: 680px;
+        margin: auto;
+        background-color: white;
+        padding: 10px;
+        border: black 2px solid;
+    }
+
+        main.productForm section.edicionCreacion article.titulos {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        main.productForm article.caracteristicas form div {
+            display: flex;
+            flex-flow: column;
+            padding: 5px;
+        }
+
+        main.productForm form div label {
+            padding: 5px 0 5px 0;
+            flex:1 1 100%;
+            font-size: larger;
+            font-weight: 600;
+        }
+
+        .categoria {
+            padding: 0 !important;
+        }
+
+        .productForm .priceBoxes {
+            flex-flow: row !important;
+            padding: 0 !important;
+        }
+
+        .formBoxes select, 
+        .formBoxes label {
+            width: 200px;
+        }
+
+        .botones {
+            flex-flow: row !important;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        
+        .botones button {
+            justify-content: center;
+            background-color: #3a6351;
+            padding: 5px;
+            border-radius: 5px;
+            width: 90px;
+            color: #fff;
+            margin-right: 10px;
+        }
+
+        .botones button:hover {
+            background-color: #70b195;
+            transition: 300ms;
+        }
+
+        .botones button a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .edicionCreacion input {
+            max-width:500px ;
+        }
+
+        .radios {
+            flex-flow: row !important;
+        }
+
+        .radios .offerRadios,
+        .radios .temporadaRadios {
+            flex-flow: row wrap !important;
+
+        }
+
+        .radios .offerRadios .radioTitle, 
+        .radios .temporadaRadios .radioTitle {
+            flex: 1 1 100%;
+        }
+
+        .radios .radioContainer label {
+            width: 100%;
+            text-align: center;
+        }
+
+        .radios .radioContainer {
+            flex: 1 1 50%;
+            align-items: center;
+        }
+
+        .checkboxes {
+            flex-flow: row wrap !important;
+            padding: 0 !important;
+            margin-top: 5px;
+        }
+
+        .colorTitle,
+        .tallesTitle {
+            flex: 1 1 100%;
+        }
+
+        .checkboxBox {
+            flex: 1 1 25%;
+            align-items: center;
+            max-width: 70px;
+        }
+
+        .checkboxBox label {
+            width: 100%;
+            text-align: center;
+
+        }
+
+        textarea {
+            overflow: auto;
+            resize: vertical;
+        }

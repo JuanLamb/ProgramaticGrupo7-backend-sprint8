@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/productForm.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <title>Cargar nuevo producto</title>
+</head>
+
+<%- include('../partials/head') %>
+
+<body>
+
+    <%- include('../partials/header') %>
+
+    <main class="productForm">
+
+        <h1>Cargar nuevo producto</h1>
+
+        <section class="edicionCreacion">
+            <article class="caracteristicas">
+                <form method="POST" action="/products" enctype="multipart/form-data" id="product-form">
+    
+                    <div class="nombre">
+                        <label for="nombre">Nombre</label>
+                        <input type="text"
+                                name="name" 
+                                id="nombre"
+                                class= "<%= locals.errors && errors.name ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.name : null %>" >
+                                <% if (locals.errors && errors.name) { %>
+                                    <p class="inputError"><%= errors.name.msg  %> </p>  
+                                <% } %>
+                                <p></p>
+                    </div>
+    
+                    <div class="marca">
+                        <label for="marca">Marca</label>
+                        <select name="brandId" id="marca">
+                            <% brands.forEach(brand => { %>
+                                <option value="<%= brand.id %>"> <%= brand.name %> </option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="genero">
+                        <label for="genero">Genero</label>
+                        <select name="genderId" id="genero">
+                            <% genders.forEach(gender => { %>
+                                <option value="<%= gender.id %>"> <%= gender.type %> </option>
+                            <% }) %>
+                        </select>
+                    </div>
+    
+                   <div class="formBoxes">
+                        <div class="categoria">
+                            <label for="categoria">Categoría</label>
+                            <select name="categoryId" id="categoria">
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category.id %>"> <%= category.name %> </option>
+                                <% }) %>
+                            </select>
+                        </div>
+        
+
+                            <div class="color">
+                                <label class="colorTitle" for="color">Colores</label>
+                                <select name="colorId" id="color">
+                                    <% colors.forEach(color => { %>
+                                        <option value="<%= color.id %>"> <%= color.color %> </option>
+                                    <% }) %>
+                                </select>
+                            </div>
+
+                            <div class="size">
+                                <label class="tallesTitle" for="size">Talles</label>
+                                <select name="sizeId" id="size">
+                                    <% sizes.forEach(size => { %>
+                                        <option value="<%= size.id %>"> <%= size.type %> </option>
+                                    <% }) %>
+                                </select>
+                            </div>
+    
+                   <div class="priceBoxes">
+                        <div class="precio">
+                            <label for="precio">Precio</label>
+                            <input type="number"
+                                   name="price" 
+                                   id="precio" 
+                                   min="0"
+                                   class= "<%= locals.errors && errors.price ? 'is-invalid' : null %>"
+                                   value="<%= locals.oldData ? oldData.price : null %>"
+                                   min="0">
+                                   <% if (locals.errors && errors.price) { %>
+                                    <p class="inputError"><%= errors.price.msg  %> </p>  
+                                <% } %>
+                                <p></p>
+                        </div>
+        
+                        <div class="descuento">
+                            <label for="descuento">Descuento</label>
+                            <input type="number"
+                                   name="discount" 
+                                   id="descuento" 
+                                   min="0"
+                                   class= "<%= locals.errors && errors.discount ? 'is-invalid' : null %>"
+                                   value="<%= locals.oldData ? oldData.discount : null %>"
+                                   min="0"
+                                   max="100">
+                                   <% if (locals.errors && errors.discount) { %>
+                                    <p class="inputError"><%= errors.discount.msg  %> </p>  
+                                <% } %>
+                                <p></p>
+                        </div>
+                   </div>
+
+                   <div class="descripcion">
+                        <label for="descripcion">Descripción</label>
+                        <textarea name="description"
+                                  id="descripcion"
+                                  class= "<%= locals.errors && errors.description ? 'is-invalid' : null %>">
+                                  <%= locals.oldData ? oldData.description : null %>
+                        </textarea>
+                        <% if (locals.errors && errors.description) { %>
+                            <p class="inputError"><%= errors.description.msg  %> </p>  
+                        <% } %>
+                        <p></p>
+                    </div>
+
+                    <div class="imagen">
+                        <label for="imagen">Imagen</label>
+                        <input type="file" name="image" id="imagen" accept=".jpg" >
+                        <% if (locals.errors && errors.image) { %>
+                            <p class="inputError"><%= errors.image.msg  %> </p>  
+                        <% } %>
+                        <p></p>
+                    </div>
+
+                    <div class="radios">
+
+                        <div class="offerRadios">
+                            <h3 class="radioTitle">En oferta?</h3>
+
+                            <div class="radioContainer">
+                                <label for="true">SI</label>
+                                <input type="radio"
+                                       name="offer" 
+                                       id="true" 
+                                       value="1"
+                                       class= "<%= locals.errors && errors.offer ? 'is-invalid' : null %> oferta"
+                                       <%= locals.oldData && oldData.offer == 1 ? "checked" : null %> >
+                            </div>
+    
+                            <div class="radioContainer">
+                                <label for="false">NO</label>
+                                <input type="radio" 
+                                       name="offer" 
+                                       id="false" 
+                                       value="2"
+                                       class= "<%= locals.errors && errors.offer ? 'is-invalid' : null %> oferta"
+                                       <%= locals.oldData && oldData.offer == 2 ? "checked" : null %> checked>
+                            </div>
+                            
+                        </div>
+                        <% if (locals.errors && errors.offer) { %>
+                            <p class="inputError"><%= errors.offer.msg  %> </p>  
+                        <% } %>
+                        <p></p>
+                        <div class="temporadaRadios">
+                            <h3 class="radioTitle">De temporada?</h3>
+                            
+                            <div class="radioContainer">
+                                <label for="true">SI</label>
+                                <input type="radio" 
+                                       name="season" 
+                                       id="true" 
+                                       value="1"
+                                       class= "<%= locals.errors && errors.season ? 'is-invalid' : null %> temporada"
+                                       <%= locals.oldData && oldData.season == 1 ? "checked" : null %> >
+                            </div>
+    
+                            <div class="radioContainer">
+                                <label for="false">NO</label>
+                                <input type="radio" 
+                                       name="season" 
+                                       id="false" 
+                                       value="2"
+                                       class= "<%= locals.errors && errors.season ? 'is-invalid' : null %> temporada"
+                                       <%= locals.oldData && oldData.season == 2 ? "checked" : null %> checked>
+                            </div>
+                        </div>
+                        <% if (locals.errors && errors.season) { %>
+                            <p class="inputError"><%= errors.season.msg  %> </p>  
+                        <% } %>
+
+                    </div>
+
+                    <div class="stock">
+                        <label for="stockMin">StockMin</label>
+                        <input type="number" 
+                               name="stockMin" 
+                               id="stockMin"
+                               class= "<%= locals.errors && errors.stockMin ? 'is-invalid' : null %>"
+                               value= "<%= locals.oldData ? oldData.stockMin : null %>"
+                               min="0">
+                               <% if (locals.errors && errors.stockMin) { %>
+                                <p class="inputError"><%= errors.stockMin.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                    </div>
+
+                    <div class="stock">
+                        <label for="stockMax">StockMax</label>
+                        <input type="number" 
+                               name="stockMax" 
+                               id="stockMax"
+                               class= "<%= locals.errors && errors.stockMax ? 'is-invalid' : null %>"
+                               value= "<%= locals.oldData ? oldData.stockMax : null %>"
+                               min="0">
+                               <% if (locals.errors && errors.stockMax) { %>
+                                <p class="inputError"><%= errors.stockMax.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                    </div>
+                    
+                    <div class="botones">
+                        <button>
+                            <a href="/products">Catálogo</a>
+                        </button>
+                        <button type="submit" class="product-button">Cargar</button>
+                    </div>
+
+                    
+
+                </form>
+
+                <div class="error" id="error"></div>
+
+            </article>
+            
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+    <script src="/js/product-create-validator.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/register.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <title>Registro Botacura</title>
+</head>
+
+<%- include('../partials/head') %>
+
+    <body>
+
+        <%- include('../partials/header') %>
+
+        <main>
+            
+            <div class="form-titulo">
+
+                <h2>Registro de usuario</h2>
+
+            </div>
+
+            <form action="/register" method="POST" form="form-registro" class="form-registro" enctype="multipart/form-data" id="form-registro">
+ 
+                        <div class="registerInput">
+                            <input 
+                                type="text" 
+                                placeholder="Nombre" 
+                                name="firstName"
+                                id="nombre-apellido" 
+                                class= "<%= locals.errors && errors.firstName ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.firstName : null %>" >
+                            <% if (locals.errors && errors.firstName) { %>
+                                <p class="inputError"><%= errors.firstName.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+                        <div class="registerInput">
+                            <input 
+                                type="text" 
+                                placeholder="Apellido" 
+                                name="lastName"
+                                id="apellido" 
+                                class= "<%= locals.errors && errors.lastName ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.lastName : null %>" >
+                            <% if (locals.errors && errors.lastName) { %>
+                                <p class="inputError"><%= errors.lastName.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="registerInput">
+                            <input 
+                                type="text" 
+                                placeholder="Usuario" 
+                                name="username" 
+                                id="usuario" 
+                                minlength="5"
+                                class= "<%= locals.errors && errors.username ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.username : null %>">
+                            <% if (locals.errors && errors.username) { %>
+                                <p class="inputError"><%= errors.username.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="registerInput">
+                            <input 
+                                type="email" 
+                                placeholder="E-mail" 
+                                name="email" 
+                                id="email" 
+                                class= "<%= locals.errors && errors.email ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.email : null %>">
+                            <% if (locals.errors && errors.email) { %>
+                                <p class="inputError"><%= errors.email.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="registerInput">
+                            <input 
+                                type="text" 
+                                name="street" 
+                                id="Calle" 
+                                placeholder="Calle" 
+                                class= "<%= locals.errors && errors.street ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.street : null %>" >
+                            <% if (locals.errors && errors.street) { %>
+                                <p class="inputError"><%= errors.street.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="registerInput">
+                            <input 
+                                type="number" 
+                                name="number" 
+                                id="domicilio" 
+                                placeholder="numero" 
+                                class= "<%= locals.errors && errors.number ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.number : null %>" min="0">
+                            <% if (locals.errors && errors.number) { %>
+                                <p class="inputError"><%= errors.number.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="registerInput">
+                            <input 
+                                type="password" 
+                                name="password" 
+                                id="password" 
+                                placeholder="Contraseña" 
+                                class= "<%= locals.errors && errors.password ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.password : null %>">
+                            <% if (locals.errors && errors.password) { %>
+                                <p class="inputError"><%= errors.password.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="registerInput">
+                            <input 
+                                type="password" 
+                                name="passwordConfirm"
+                                id="password-confirm"
+                                placeholder="Confirma tu contraseña" 
+                                class= "<%= locals.errors && errors.passwordConfirm ? 'is-invalid' : null %>"
+                                value="<%= locals.oldData ? oldData.passwordConfirm : null %>">
+                                <% if (locals.errors && errors.passwordConfirm) { %>
+                                <p class="inputError"><%= errors.passwordConfirm.msg  %> </p>  
+                                <% } %>
+                                <p></p>
+                        </div>
+                        
+                    <div class="registerInput">
+
+                        <input type="file" name="avatar" id="avatar" >
+                        <% if (locals.errors && errors.avatar) { %>
+                            <p class="inputError"><%= errors.avatar.msg  %> </p>  
+                        <% } %>
+                        <p></p>
+                    </div>
+                    
+                    <div class="button">
+                        <button type="reset">Cancelar</button>
+                        <button class="register-button" type="submit">Enviar</button>
+                    </div>
+
+                    <p class="form-link">Ya estás registrado? <a href="/login">Ingrese aquí</a></p>
+
+                    <div class="error" id="error"></div>
+            </form>
+        </main>
+
+            <%- include('../partials/footer') %>
+            <script src="js/form-register-validator.js"></script>
+    </body>
+
+</html>

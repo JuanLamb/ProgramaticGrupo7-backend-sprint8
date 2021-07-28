@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/productEdit.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
+        integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <title>Editar producto</title>
+</head>
+
+<%- include('../partials/head') %>
+
+    <body>
+
+        <%- include('../partials/header') %>
+
+        <main class="productForm">
+
+            <h1>Editar <%= product.name  %> </h1>
+    
+            <section class="edicionCreacion">
+                <article class="caracteristicas">
+                    <form id="product-form" method="POST" action="/products/<%= product.id %>?_method=PUT" enctype="multipart/form-data">
+        
+                        <div class="nombre">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" 
+                                   name="name" 
+                                   id="nombre"
+                                   class= "<%= locals.errors && errors.name ? 'is-invalid' : null %>"
+                                   value="<%= locals.errors ? oldData.name : product.name %>">
+                                    <% if (locals.errors && errors.name) { %>
+                                        <p class="inputError"><%= errors.name.msg  %> </p>  
+                                    <% } %>
+                                   <p></p>
+                        </div>
+        
+                        <div class="marca">
+                            <label for="marca">Marca</label>
+                            <select name="brandId" id="marca">
+                                <% brands.forEach(brand => { %>
+                                    <% if (brand.id == product.brandId) { %>
+                                        <option value="<%= product.brandId %>" selected> <%= product.brand.name %> </option>
+                                    <% }else{ %>
+                                        <option value="<%= brand.id %>"> <%= brand.name %> </option>
+                                   <% } %>
+                                <% }) %>
+                            </select> 
+                        </div>
+
+                        <div class="genero">
+                            <label for="genero">Genero</label>
+                            <select name="genderId" id="genero">
+                                <% genders.forEach(gender => { %>
+                                    <% if (gender.id == product.genderId) { %>
+                                        <option value="<%= product.genderId %>" selected> <%= product.gender.type %> </option>
+                                    <% }else{ %>
+                                        <option value="<%= gender.id %>"> <%= gender.type %> </option>
+                                   <% } %>
+                                <% }) %>
+                            </select>
+                        </div>
+        
+                       <div class="formBoxes">
+                            <div class="categoria">
+                                <label for="categoria">Categoría</label>
+                                <select name="categoryId" id="categoria">
+                                    <% categories.forEach(category => { %>
+                                        <% if (category.id == product.categoryId) { %>
+                                            <option value="<%= product.categoryId %>" selected> <%= product.category.name %> </option>
+                                        <% }else{ %>
+                                            <option value="<%= category.id %>"> <%= category.name %> </option>
+                                       <% } %>
+                                    <% }) %> 
+                                </select>
+                            </div>
+                            
+                            <div class="color">
+                                <label for="color">Categoría</label>
+                                <select name="colorId" id="color">
+                                    <% colors.forEach(color => { %>
+                                        <% if (color.id == product.colorId) { %>
+                                            <option value="<%= product.colorId %>" selected> <%= product.color.color %> </option>
+                                        <% }else{ %>
+                                            <option value="<%= color.id %>"> <%= color.color %> </option>
+                                       <% } %>
+                                    <% }) %> 
+                                </select>
+                            </div>
+
+                            <div class="size">
+                                <label class="tallesTitle" for="size">Categoría</label>
+                                <select name="sizeId" id="size">
+                                    <% sizes.forEach(size => { %>
+                                        <% if (size.id == product.sizeId) { %>
+                                            <option value="<%= product.sizeId %>" selected> <%= product.size.type %> </option>
+                                        <% }else{ %>
+                                            <option value="<%= size.id %>"> <%= size.type %> </option>
+                                       <% } %>
+                                    <% }) %> 
+                                </select>
+                            </div>
+        
+                       <div class="priceBoxes">
+                            <div class="precio">
+                                <label for="precio">Precio</label>
+                                <input type="number" 
+                                       name="price" 
+                                       id="precio" 
+                                       class= "<%= locals.errors && errors.price ? 'is-invalid' : null %>"
+                                       value="<%= locals.errors ? oldData.price : product.price %>"
+                                       min="0">
+                                    <% if (locals.errors && errors.price) { %>
+                                        <p class="inputError"><%= errors.price.msg  %> </p>  
+                                    <% } %>
+                                    <p></p>
+                            </div>
+            
+                            <div class="descuento">
+                                <label for="descuento">Descuento</label>
+                                <input type="number"
+                                        name="discount" 
+                                        id="descuento" 
+                                        class= "<%= locals.errors && errors.discount ? 'is-invalid' : null %>"
+                                        value="<%= locals.errors ? oldData.discount : product.discount %>"
+                                        min="0"
+                                        max="100">
+                                    <% if (locals.errors && errors.discount) { %>
+                                        <p class="inputError"><%= errors.discount.msg  %> </p>  
+                                    <% } %>
+                                    <p></p>
+                            </div>
+                       </div>
+    
+                       <div class="descripcion">
+                            <label for="descripcion">Descripción</label>
+                            <textarea name="description" 
+                                      id="descripcion"
+                                      class= "<%= locals.errors && errors.description ? 'is-invalid' : null %>" >
+                                      <%= locals.errors ? oldData.description : product.description %>
+                                    </textarea>
+                                    <% if (locals.errors && errors.description) { %>
+                                        <p class="inputError"><%= errors.description.msg  %> </p>  
+                                    <% } %>
+                                    <p></p>
+                        </div>
+    
+                        <div class="imagen">
+                            <label for="imagen">Imagen</label>
+                            <input type="file" name="image" id="imagen" >
+                            <input type="hidden" name="oldImagen" value="<%= image.name %>" id="hiddenImage">
+                            <% if (locals.errors && errors.image) { %>
+                                <p class="inputError"><%= errors.image.msg  %> </p>  
+                            <% } %>
+                            <p></p>
+                        </div>
+
+                        <div class="radios">
+
+                            <div class="offerRadios">
+                                <h3 class="radioTitle">En oferta?</h3>
+    
+                                <div class="radioContainer">
+                                    <label for="true">SI</label>
+                                    <input type="radio" name="offer" id="true" value= 1 <%= product.offer == 1 ? 'checked' : '' %> >
+                                </div>
+        
+                                <div class="radioContainer">
+                                    <label for="false">NO</label>
+                                    <input type="radio" name="offer" id="false" value= 2 <%= product.offer == 2 ? 'checked' : '' %>>
+                                </div>
+                            </div>
+    
+                            <div class="temporadaRadios">
+                                <h3 class="radioTitle">De temporada?</h3>
+                                
+                                <div class="radioContainer">
+                                    <label for="true">SI</label>
+                                    <input type="radio" name="season" id="true" value= 1 <%= product.season == 1 ? 'checked' : '' %>>
+                                </div>
+        
+                                <div class="radioContainer">
+                                    <label for="false">NO</label>
+                                    <input type="radio" name="season" id="false" value= 2 <%= product.season == 2 ? 'checked' : '' %>>
+                                </div>
+                            </div>
+    
+                        </div>
+
+                        <div class="stock">
+                            <label for="stockMin">StockMin</label>
+                            <input type="number" 
+                                   name="stockMin" 
+                                   id="stockMin" 
+                                   class= "<%= locals.errors && errors.stockMin ? 'is-invalid' : null %>"
+                                   value="<%= locals.errors ? oldData.stockMin : product.stockMin %>"
+                                   min="0">
+                                    <% if (locals.errors && errors.stockMin) { %>
+                                        <p class="inputError"><%= errors.stockMin.msg  %> </p>  
+                                    <% } %>
+                                    <p></p>
+                        </div>
+    
+                        <div class="stock">
+                            <label for="stockMax">StockMax</label>
+                            <input type="number" 
+                                   name="stockMax" 
+                                   id="stockMax" 
+                                   class= "<%= locals.errors && errors.stockMax ? 'is-invalid' : null %>"
+                                   value="<%= locals.errors ? oldData.stockMax : product.stockMax %>"
+                                   min="0">
+                                    <% if (locals.errors && errors.stockMax) { %>
+                                        <p class="inputError"><%= errors.stockMax.msg  %> </p>  
+                                    <% } %>
+                                    <p></p>
+                        </div>
+                        
+                        <div class="botones">
+                            <button>
+                                <a href="/products/<%= product.id %>">Producto</a>
+                            </button>
+                            <button>
+                                <a href="/products">Catálogo</a>
+                            </button>
+                            <button type="submit">Actualizar</button>
+                        </div>
+    
+                    </form>
+
+                </article>
+                
+            </section>
+        </main>
+
+        <%- include('../partials/footer') %>
+        <script src="/js/product-edit-validator.js"></script>
+    </body>
+
+</html>

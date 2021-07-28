@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/productDetail.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+    <title><%= product.name %>  | Botacura</title>
+</head>
+
+    <%- include('../partials/head') %>
+
+<body>
+    
+    <%- include('../partials/header') %>
+
+
+    <main class="productDetail">
+        <section class="imagenes">
+            <div class="imagen-principal">
+            
+                <img src="/images/productos/<%= product.image[0].name %>" alt="fotoPrincipal">
+
+            </div>
+        </section>
+        
+
+        <section class="caracteristicas">
+            <div class="titulo-seccion">
+                <h2><%= product.name %> </h2>
+                <% if(locals.isLogged && locals.userLogged.roleId == 2){ %>
+                    <div class="botones-superiores">
+                        <form action="">
+                            <button><a href="/products/<%= product.id %>/edit ">Ver detalles</a></button>
+                        </form>
+    
+                        <form action="/products/<%= product.id %>?_method=DELETE" class="delete" method="POST" enctype="multipart/form-data">
+                            <button class="deleteButton" type="submit">Borrar producto</button>
+                        </form>
+                    </div>
+                <% } %>
+            </div>
+            
+            <div class="formulario">
+                <form>
+                    <div class="color-ropa">
+                        <label for="colorSelector">Color</label>
+                        <input type="radio" name="colorId" value="<%= product.color.color %>" id="colorSelector" checked><%= product.color.color %>
+                    </div>
+                    
+                    <div class="talle-ropa">
+                        <label for="sizeSelector">Talle</label>
+                        <input type="radio" name="sizeId" value="<%= product.size.type %>" id="sizeSelector" checked><%= product.size.type %>
+                    </div>
+
+                    <div class="botones-precio">
+                        <button type="submit"><a href="/productCart">Agregar al carrito</a></button>
+                        <div class="parrafos">
+                            <p id="precio">$<%= product.price %> </p>
+                            
+                            <p><%= product.offer ? '%' + product.discount + ' Off' : '' %> </p>
+                            
+                        </div>
+                        <button type="submit"><a href="/profile">Agregar a deseados</a></button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="descripcion">
+                <p><%= product.description %></p>
+            </div>
+        </section>
+
+        <section class="recomendados">
+            <div class="titulo-seccion">
+                <h2>Productos de la misma categoría</h2>
+            </div>
+
+            <% filteredProducts.forEach (element => { %>
+                <% if (element.id != product.id) { %>
+                <div class="productos product-card">
+                    <div class="imgContainer">
+                        <a href="/products/<%= element.id %>"><img src="/images/productos/<%= element.image[0].name %> " alt="" class="img-prod"></a>
+                    </div>
+                    <div class="articleInfo">
+                        <i class="heart"></i>
+                        <h4 class="ProductName"><%= element.name %> </h4>
+                        <p class="productBrand"><%= element.brand.name %></p>
+                        <p class="productPrice">$<%= element.price %></p>
+                    </div>
+                </div>
+                <% } %>
+            
+            <% }) %>            
+            
+        </section>
+
+        <section class="comentarios">
+            <div class="titulo-seccion">
+                <h2>¡Dejanos tu opinión!</h2>
+            </div>
+            
+            <article class="comentario">
+                <img src="/images/users/fotoDePerfil1.png" alt="fotoDePerfil">
+                <h3>Cliente 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure totam quibusdam ipsa officiis, esse quas cupiditate quo. Ea repudiandae deleniti sunt incidunt, repellat nam saepe culpa esse optio. Beatae, possimus!</p>
+            </article>
+
+            <article class="comentario">
+                <img src="/images/users/fotoDePerfil2.png" alt="fotoDePerfil">
+                <h3>Cliente 2</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure totam quibusdam ipsa officiis, esse quas cupiditate quo. Ea repudiandae deleniti sunt incidunt, repellat nam saepe culpa esse optio. Beatae, possimus!</p>
+            </article>
+
+            <article class="comentario">
+                <img src="/images/users/fotoDePerfil3.png" alt="fotoDePerfil">
+                <h3>Cliente 3</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure totam quibusdam ipsa officiis, esse quas cupiditate quo. Ea repudiandae deleniti sunt incidunt, repellat nam saepe culpa esse optio. Beatae, possimus!</p>
+            </article>
+
+            <article class="tuComentario">                
+                    <div class="comentarioUsuario">
+                        <img src="/images/users/fotoDePerfil4.png" alt="fotoDePerfil">
+                        <h3>Usuario</h3>
+                        <form action="/tuComentario" method="POST">
+                            <label for="comentario"></label>
+                            <textarea name="comentarioUsuario" id="comentario" placeholder="¡Escribí tu comentario!"></textarea>
+                        </form>
+                    </div>
+            </article>
+        </section>
+    </main>
+
+    <%- include('../partials/footer') %>
+
+</body>
+</html>
