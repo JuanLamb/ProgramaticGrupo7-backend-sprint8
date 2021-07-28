@@ -10,13 +10,11 @@ const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware');
 const db = require('./src/database/models');
 const sequelize = db.sequelize;
 
-
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use (express.json());
 app.use(methodOverride('_method'));
-
 
 app.use(session({
     secret: 'Secretoo',
@@ -31,9 +29,17 @@ const homeRouter = require('./routes/homeRouter');
 const userRouter = require('./routes/userRouter');
 const productsRouter = require('./routes/productsRouter');
 
+// Llamo routers de API
+const apiUsersRouter = require("./routes/api/users");
+const apiProductsRouter = require("./routes/api/products");
+
 app.use('/', homeRouter);
 app.use('/', userRouter);
 app.use('/products', productsRouter);
+
+// Declaro urls de APIs
+app.use('/api/users', apiUsersRouter);
+app.use('/api/products', apiProductsRouter);
 
 
 app.listen(port || 3000, async () => {
