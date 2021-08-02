@@ -82,6 +82,22 @@ let productsAPIController = {
                 include: ["brand", "gender", "color", "size", "category", "image"]}
             )
             
+            // Almaceno url de img en variable
+            let imgUrl = req.headers.host + '/img/file.jpg';
+
+            // Inserto url de imagen en product
+            product.dataValues.urlImg = imgUrl;
+
+            // Elimino data innecesaria del objeto product
+            delete product.dataValues.destroyTime;
+            delete product.dataValues.createdAt;
+            delete product.dataValues.updatedAt;
+            delete product.dataValues.brandId;
+            delete product.dataValues.categoryId;
+            delete product.dataValues.genderId;
+            delete product.dataValues.sizeId;
+            delete product.dataValues.colorId;
+
             // Armo respuesta en formato JSON
             let respuesta = {
                 meta: {
@@ -90,15 +106,6 @@ let productsAPIController = {
                 },
                 data: product
             }
-
-            delete respuesta.data.dataValues.destroyTime;
-            delete respuesta.data.dataValues.createdAt;
-            delete respuesta.data.dataValues.updatedAt;
-            delete respuesta.data.dataValues.brandId;
-            delete respuesta.data.dataValues.categoryId;
-            delete respuesta.data.dataValues.genderId;
-            delete respuesta.data.dataValues.sizeId;
-            delete respuesta.data.dataValues.colorId;
 
             res.json(respuesta);
         } catch (error) {

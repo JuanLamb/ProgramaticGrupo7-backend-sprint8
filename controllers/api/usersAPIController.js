@@ -47,6 +47,13 @@ let usersAPIController = {
                 {where: {id : req.params.id}, 
                 include: ["avatar", "address"]}
             )
+
+            // Almaceno url de img en variable
+            let avatarUrl = req.headers.host + '/img/file.jpg';
+            
+            // Inserto url de imagen en product
+            user.dataValues.avatarURL = avatarUrl;
+
             // Armo respuesta con resultado de findOne en formato JSON
             let respuesta = {
                 meta: {
