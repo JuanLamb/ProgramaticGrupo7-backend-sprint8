@@ -18,41 +18,39 @@ let productsAPIController = {
             let products = await Products.findAll({
                 include: ["brand", "gender", "color", "size", "category", "image"]
             });
-            // declaro contadores
-            let calzado = 0;
-            let escalada = 0;
-            let mochilas = 0;
-            let camperas = 0;
 
-            // itero el array de productos e incremento cada contador si cumple
-            for (let i = 0; i < products.length; i++) {
-                switch (products[i].dataValues.categoryId) {
-                    case 1:
-                        escalada ++;
-                        break;
-                    case 2:
-                        camperas ++;
-                        break;
-                    case 3:
-                        calzado ++;
-                        break;
-                    case 4:
-                        mochilas ++;
-                        break;
-                
-                    default:
-                        break;
+            let escalada = await Products.count({
+                where: {
+                    categoryId: 1
                 }
-                delete products[i].dataValues.categoryId;
-                delete products[i].dataValues.createdAt;
-                delete products[i].dataValues.updatedAt;
-                delete products[i].dataValues.destroyTime;
-                delete products[i].dataValues.brandId;
-                delete products[i].dataValues.colorId;
-                delete products[i].dataValues.genderId;
-                delete products[i].dataValues.sizeId;
-                products[i].dataValues.detail = `api/products/${products[i].dataValues.id}`
-            }
+            })
+            let camperas = await Products.count({
+                where: {
+                    categoryId: 2
+                }
+            })
+            let calzado = await Products.count({
+                where: {
+                    categoryId: 3
+                }
+            })
+            let mochilas = await Products.count({
+                where: {
+                    categoryId: 4
+                }
+            })
+            // Elimino datos innecesarios del JSON
+            let arrayRespuesta = products.map((product) => { 
+                delete product.dataValues.createdAt;
+                delete product.dataValues.updatedAt;
+                delete product.dataValues.destroyTime;
+                delete product.dataValues.brandId;
+                delete product.dataValues.categoryId;
+                delete product.dataValues.colorId;
+                delete product.dataValues.genderId;
+                delete product.dataValues.sizeId;
+                product.dataValues.detail = `api/products/${product.id}`
+                return product;})
 
             // Armo respuesta en formato JSON
             let respuesta = {
@@ -67,9 +65,40 @@ let productsAPIController = {
                     },
                     url: 'api/products'
                 },
-                data: products
+                data: arrayRespuesta
             }
 
+            res.json(respuesta);
+        } catch (error) {
+            console.log(error);
+            return res.status(500);
+        }
+    },
+    detail: async (req, res) => {
+        try {
+            // Busco el producto en la DB
+            let product = await Products.findOne(
+                {where: {id : req.params.id}, 
+                include: ["brand", "gender", "color", "size", "category", "image"]}
+            )
+            
+            // Armo respuesta en formato JSON
+            let respuesta = {
+                meta: {
+                    status : 200,
+                    url: `api/products/${product.id}`
+                },
+                data: product
+            }
+
+            delete respuesta.data.dataValues.destroyTime;
+            delete respuesta.data.dataValues.createdAt;
+            delete respuesta.data.dataValues.updatedAt;
+            delete respuesta.data.dataValues.brandId;
+            delete respuesta.data.dataValues.categoryId;
+            delete respuesta.data.dataValues.genderId;
+            delete respuesta.data.dataValues.sizeId;
+            delete respuesta.data.dataValues.colorId;
 
             res.json(respuesta);
         } catch (error) {

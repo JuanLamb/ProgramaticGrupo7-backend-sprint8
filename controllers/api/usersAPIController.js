@@ -11,23 +11,28 @@ let usersAPIController = {
     list: async (req, res) => {
         try {
             let userList = await Users.findAll();
-            // Armo respuesta con resultado de findAll
+
+            // Elimino password de cada objeto del array
+            let userArray = userList.map((user) => { 
+                delete user.dataValues.password;
+                delete user.dataValues.createdAt;
+                delete user.dataValues.updatedAt;
+                delete user.dataValues.addressId;
+                delete user.dataValues.avatarId;
+                delete user.dataValues.roleId;
+                user.dataValues.detail = `api/users/${user.dataValues.id}`
+                return user;});
+
+            // Armo respuesta con resultado de findAll en formato JSON
             let respuesta = {
                 meta: {
                     status : 200,
                     count: userList.length,
                     url: 'api/users'
                 },
-                data: userList
+                data: userArray
             }
-            // Almaceno array data en arrayUsers
-            let arrayUsers = respuesta.data;
 
-            // Elimino password de cada objeto del array
-            let newArray = arrayUsers.map((user) => { 
-                delete user.dataValues.password
-                user.dataValues.detail = `api/users/${user.dataValues.id}`
-                return user;});
             // Envio respuesta en formato JSON
             res.json(respuesta);
         } catch (error) {
@@ -42,6 +47,7 @@ let usersAPIController = {
                 {where: {id : req.params.id}, 
                 include: ["avatar", "address"]}
             )
+            // Armo respuesta con resultado de findOne en formato JSON
             let respuesta = {
                 meta: {
                     status : 200,
@@ -56,7 +62,7 @@ let usersAPIController = {
             delete respuesta.data.dataValues.avatarId;
             delete respuesta.data.dataValues.roleId;
 
-            res.json(user);
+            res.json(respuesta);
         } catch (error) {
             console.log(error);
             return res.status(500);
