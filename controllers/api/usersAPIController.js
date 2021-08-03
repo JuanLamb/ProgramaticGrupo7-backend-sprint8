@@ -47,9 +47,8 @@ let usersAPIController = {
                 {where: {id : req.params.id}, 
                 include: ["avatar", "address"]}
             )
-
             // Almaceno url de img en variable
-            let avatarUrl = req.headers.host + '/img/file.jpg';
+            let avatarUrl = req.headers.host + `/images/users/${user.dataValues.avatar.name}`;
             
             // Inserto url de imagen en product
             user.dataValues.avatarURL = avatarUrl;

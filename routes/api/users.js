@@ -9,4 +9,5 @@ router.get('/', usersAPIController.list);
 // Detalle de usuario
 router.get('/:id', usersAPIController.detail);
 
+
 module.exports = router;

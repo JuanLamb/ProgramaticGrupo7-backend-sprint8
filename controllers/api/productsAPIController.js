@@ -1,6 +1,7 @@
 const { response } = require('express');
 const db = require('../../src/database/models');
 const sequelize = db.sequelize;
+const path = require('path');
 
 const Products = db.Product;
 const Images = db.Image;
@@ -81,9 +82,8 @@ let productsAPIController = {
                 {where: {id : req.params.id}, 
                 include: ["brand", "gender", "color", "size", "category", "image"]}
             )
-            
             // Almaceno url de img en variable
-            let imgUrl = req.headers.host + '/img/file.jpg';
+            let imgUrl = req.headers.host + `/images/productos/${product.dataValues.image[0].name}`;
 
             // Inserto url de imagen en product
             product.dataValues.urlImg = imgUrl;
@@ -106,7 +106,7 @@ let productsAPIController = {
                 },
                 data: product
             }
-
+            console.log(respuesta)
             res.json(respuesta);
         } catch (error) {
             console.log(error);
