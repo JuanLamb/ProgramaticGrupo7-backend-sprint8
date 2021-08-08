@@ -6,7 +6,11 @@ const productsAPIController = require("../../controllers/api/productsAPIControll
 // Listado de todos los productos en la db
 router.get('/', productsAPIController.list);
 
+// Ultimo producto cargado en DB
+router.get('/lastProduct', productsAPIController.lastProduct);
+
 // Detalle de usuario
 router.get('/:id', productsAPIController.detail);
+
 
 module.exports = router;

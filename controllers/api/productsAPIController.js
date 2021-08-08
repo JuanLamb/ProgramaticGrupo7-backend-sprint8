@@ -40,6 +40,7 @@ let productsAPIController = {
                     categoryId: 4
                 }
             })
+            let countCategories = await Categories.count()
             // Elimino datos innecesarios del JSON
             let arrayRespuesta = products.map((product) => { 
                 delete product.dataValues.createdAt;
@@ -58,6 +59,7 @@ let productsAPIController = {
                 meta: {
                     status : 200,
                     count: products.length,
+                    categoriesCount : countCategories,
                     countByCategory: {
                         calzado: calzado,
                         escalada: escalada,
@@ -83,7 +85,7 @@ let productsAPIController = {
                 include: ["brand", "gender", "color", "size", "category", "image"]}
             )
             // Almaceno url de img en variable
-            let imgUrl = req.headers.host + `/images/productos/${product.dataValues.image[0].name}`;
+            let imgUrl = "http://" + req.headers.host + `/images/productos/${product.dataValues.image[0].name}`;
 
             // Inserto url de imagen en product
             product.dataValues.urlImg = imgUrl;
@@ -106,7 +108,37 @@ let productsAPIController = {
                 },
                 data: product
             }
-            console.log(respuesta)
+
+            res.json(respuesta);
+        } catch (error) {
+            console.log(error);
+            return res.status(500);
+        }
+    },
+    lastProduct: async (req, res) => {
+        try {
+            // Busco el id del ultimo producto creado
+            let lastProductId = await Products.findOne({
+                attributes: [[sequelize.fn('max', sequelize.col('id')), 'id']],
+                raw: true
+            });
+            // Busco el ultimo producto creado
+            let product = await Products.findOne({where: {id: lastProductId.id}, include: ["image"]});
+
+            // Almaceno url de img en variable
+            let imgUrl = "http://" + req.headers.host + `/images/productos/${product.dataValues.image[0].name}`;
+
+            // Inserto url de imagen en product
+            product.dataValues.urlImg = imgUrl;
+
+            // Armo respuesta
+            let respuesta = {
+                meta: {
+                    status : 200,
+                    url: `api/lastProduct`
+                },
+                data: product
+            }
             res.json(respuesta);
         } catch (error) {
             console.log(error);

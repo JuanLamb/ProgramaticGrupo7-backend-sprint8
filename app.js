@@ -7,13 +7,26 @@ const session = require('express-session');
 const cookies = require('cookie-parser');
 const userLoggedMiddleware = require('./middlewares/userLoggedMiddleware');
 const cors = require('cors');
+var corsOptions = {
+    origin: "*"
+  };
 
 const db = require('./src/database/models');
 const sequelize = db.sequelize;
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
-app.use(cors())
+
+app.use(cors(corsOptions));
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header("Access-Control-Allow-Methods", "OPTIONS, POST, GET, PUT, DELETE");
+    res.header('Access-Control-Allow-Headers', "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+    next();
+  }
+app.use(allowCrossDomain);
+
 app.use(express.urlencoded({ extended: false }));
 app.use (express.json());
 app.use(methodOverride('_method'));
@@ -35,6 +48,7 @@ const productsRouter = require('./routes/productsRouter');
 // Llamo routers de API
 const apiUsersRouter = require("./routes/api/users");
 const apiProductsRouter = require("./routes/api/products");
+const apiCategoriesRouter = require("./routes/api/categories");
 
 app.use('/', homeRouter);
 app.use('/', userRouter);
@@ -43,6 +57,7 @@ app.use('/products', productsRouter);
 // Declaro urls de APIs
 app.use('/api/users', apiUsersRouter);
 app.use('/api/products', apiProductsRouter);
+app.use('/api/categories', apiCategoriesRouter);
 app.use(function(req, res, next) {
     res.status(404).json({
         status: "error 400",
@@ -50,7 +65,7 @@ app.use(function(req, res, next) {
     });
   });
 
-app.listen(port || 3000, async () => {
+app.listen(port || 3002, async () => {
     console.log('Servidor corriendo en puerto');
     // await sequelize.authenticate();
     console.log('Database conectada!')
